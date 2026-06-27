@@ -87,13 +87,13 @@ Once running, navigate to [http://localhost:3000](http://localhost:3000) in your
 ## Project Architecture
 ```mermaid
 graph TD
-    User[Web Browser Client] -->|POST /api/research| Server[Express Server]
-    Server -->|Validation & Route Handler| Route[research.js Route]
-    Route -->|Call generateReport| Service[geminiService.js Service]
-    Service -->|SDK Client initialized| Gemini[Google Gemini 2.5 Flash API]
-    Gemini -->|Returns Report Text| Service
-    Service -->|Return Raw Markdown| Route
-    Route -->|{"success": true, "report": "..."}| Server
-    Server -->|Send JSON Response| User
-    User -->|Client-side Parser| Render[Display parsed sections inside Glassmorphism Cards]
+    User[Web Browser Client] -->|"POST /api/research"| Server[Express Server]
+    Server -->|"Validation & Route Handler"| Route[research.js Route]
+    Route -->|"Call generateReport"| Service[geminiService.js Service]
+    Service -->|"SDK Client initialized"| Gemini[Google Gemini 2.5 Flash API]
+    Gemini -->|"Returns Report Text"| Service
+    Service -->|"Return Raw Markdown"| Route
+    Route -->|"JSON Response { success, report }"| Server
+    Server -->|"Send JSON Response"| User
+    User -->|"Client-side Parser"| Render[Display parsed sections inside Glassmorphism Cards]
 ```
