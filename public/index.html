@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Research Assistant - Professional Reports by Gemini</title>
+  <meta name="description" content="Generate detailed, professional research reports including Executive Summary, Key Insights, Opportunities, Risks, and Recommendations using Google Gemini AI.">
+  
+  <!-- Google Fonts: Outfit & Inter for high-quality SaaS typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Background decorative blobs for premium light/dark glassmorphism visual depth -->
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+
+  <!-- Header Navigation -->
+  <header>
+    <div class="nav-container">
+      <div class="brand">
+        <svg class="brand-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M12 16v-4"></path>
+          <path d="M12 8h.01"></path>
+        </svg>
+        <span class="brand-name">AI Research Assistant</span>
+      </div>
+      
+      <!-- Dark/Light Mode Toggle Button -->
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle dark mode">
+        <!-- Sun icon (shown in dark mode) -->
+        <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 2v2"></path>
+          <path d="M12 20v2"></path>
+          <path d="m4.93 4.93 1.41 1.41"></path>
+          <path d="m17.66 17.66 1.41 1.41"></path>
+          <path d="M2 12h2"></path>
+          <path d="M20 12h2"></path>
+          <path d="m6.34 17.66-1.41 1.41"></path>
+          <path d="m19.07 4.93-1.41 1.41"></path>
+        </svg>
+        <!-- Moon icon (shown in light mode) -->
+        <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="main-container">
+    
+    <!-- Hero / Title Section -->
+    <section class="hero-section">
+      <h1 class="hero-title">AI Research Assistant</h1>
+      <p class="hero-subtitle">Generate professional, structured research reports instantly using Google Gemini AI</p>
+    </section>
+
+    <!-- Generator Interface Form -->
+    <section class="form-section glass-panel">
+      <form id="research-form" novalidate>
+        
+        <!-- Topic Input Container -->
+        <div class="input-group">
+          <label for="topic-input" class="input-label">
+            Research Topic <span class="required-indicator">*</span>
+          </label>
+          <div class="input-wrapper">
+            <input 
+              type="text" 
+              id="topic-input" 
+              placeholder="e.g. Artificial Intelligence in Healthcare, Quantum Computing..." 
+              maxlength="200" 
+              required
+              autocomplete="off"
+            >
+            <!-- character counter -->
+            <span class="char-counter" id="topic-counter">0 / 200</span>
+          </div>
+        </div>
+
+        <!-- Context Textarea Container -->
+        <div class="input-group">
+          <label for="context-input" class="input-label">
+            Additional Context <span class="optional-label">(Optional)</span>
+          </label>
+          <div class="input-wrapper">
+            <textarea 
+              id="context-input" 
+              placeholder="e.g. Focus on cardiology diagnosis, clinical integration, cost reduction, and barriers to adoption over the next 5 years." 
+              maxlength="1000"
+              rows="3"
+            ></textarea>
+            <!-- character counter -->
+            <span class="char-counter" id="context-counter">0 / 1000</span>
+          </div>
+        </div>
+
+        <!-- Button Container -->
+        <button type="submit" id="generate-btn" class="primary-btn">
+          <span class="btn-text">Generate Research Report</span>
+          <!-- Loading Spinner -->
+          <div class="spinner-container hidden" id="btn-spinner">
+            <svg class="spinner" viewBox="0 0 50 50">
+              <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+            </svg>
+          </div>
+        </button>
+        
+      </form>
+    </section>
+
+    <!-- Error Messaging Console -->
+    <div id="error-console" class="error-panel hidden">
+      <svg class="error-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" x2="12" y1="8" y2="12"></line>
+        <line x1="12" x2="12.01" y1="16" y2="16"></line>
+      </svg>
+      <span id="error-message">An error occurred while generating the report.</span>
+    </div>
+
+    <!-- Output Section (Hidden initially) -->
+    <section id="output-section" class="output-section hidden">
+      
+      <!-- Action Toolbar -->
+      <div class="action-toolbar">
+        <h2 class="output-title">Research Findings</h2>
+        <div class="toolbar-buttons">
+          
+          <button id="copy-btn" class="secondary-btn" title="Copy entire report to clipboard">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect>
+              <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path>
+            </svg>
+            <span>Copy</span>
+          </button>
+          
+          <button id="download-btn" class="secondary-btn" title="Download report as text file">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" x2="12" y1="15" y2="3"></line>
+            </svg>
+            <span>Download</span>
+          </button>
+          
+          <button id="clear-btn" class="secondary-btn danger-btn" title="Clear search results and form">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 6h18"></path>
+              <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+              <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+            </svg>
+            <span>Clear</span>
+          </button>
+          
+        </div>
+      </div>
+
+      <!-- Report Structured Cards Grid -->
+      <div class="report-grid">
+        
+        <!-- Executive Summary -->
+        <article class="report-card glass-card card-exec" id="card-executive-summary">
+          <header class="card-header">
+            <div class="card-icon-wrapper">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" x2="8" y1="13" y2="13"></line>
+                <line x1="16" x2="8" y1="17" y2="17"></line>
+                <polyline points="10 9 9 9 8 9"></polyline>
+              </svg>
+            </div>
+            <h3 class="card-title">Executive Summary</h3>
+          </header>
+          <div class="card-body">
+            <!-- Dynamic Content -->
+          </div>
+        </article>
+
+        <!-- Key Insights -->
+        <article class="report-card glass-card card-insights" id="card-key-insights">
+          <header class="card-header">
+            <div class="card-icon-wrapper">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .6 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path>
+                <path d="M9 18h6"></path>
+                <path d="M10 22h4"></path>
+              </svg>
+            </div>
+            <h3 class="card-title">Key Insights</h3>
+          </header>
+          <div class="card-body">
+            <!-- Dynamic Content -->
+          </div>
+        </article>
+
+        <!-- Opportunities -->
+        <article class="report-card glass-card card-opps" id="card-opportunities">
+          <header class="card-header">
+            <div class="card-icon-wrapper">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+              </svg>
+            </div>
+            <h3 class="card-title">Opportunities</h3>
+          </header>
+          <div class="card-body">
+            <!-- Dynamic Content -->
+          </div>
+        </article>
+
+        <!-- Risks -->
+        <article class="report-card glass-card card-risks" id="card-risks">
+          <header class="card-header">
+            <div class="card-icon-wrapper">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+                <line x1="12" x2="12" y1="9" y2="13"></line>
+                <line x1="12" x2="12.01" y1="17" y2="17"></line>
+              </svg>
+            </div>
+            <h3 class="card-title">Risks</h3>
+          </header>
+          <div class="card-body">
+            <!-- Dynamic Content -->
+          </div>
+        </article>
+
+        <!-- Recommendations -->
+        <article class="report-card glass-card card-recs" id="card-recommendations">
+          <header class="card-header">
+            <div class="card-icon-wrapper">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+              </svg>
+            </div>
+            <h3 class="card-title">Recommendations</h3>
+          </header>
+          <div class="card-body">
+            <!-- Dynamic Content -->
+          </div>
+        </article>
+
+      </div>
+      
+    </section>
+    
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-container">
+      <p>&copy; 2026 AI Research Assistant. Powered by Google Gemini 2.5 Flash.</p>
+    </div>
+  </footer>
+
+  <!-- Toast Notification System (For Clipboard / Actions feedback) -->
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

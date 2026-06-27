@@ -1,0 +1,28 @@
+{
+  "name": "ai-research-assistant",
+  "version": "1.0.0",
+  "description": "Generate professional research reports using Google Gemini AI",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [
+    "ai",
+    "research",
+    "gemini",
+    "express",
+    "report-generator"
+  ],
+  "author": "Antigravity",
+  "license": "ISC",
+  "dependencies": {
+    "@google/genai": "^2.10.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}
